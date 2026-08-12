@@ -70,6 +70,10 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+/* Атрибут hidden должен побеждать любой display в компонентах:
+   иначе .lock { display: flex } оставляет форму входа поверх витрины. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--c-bg);

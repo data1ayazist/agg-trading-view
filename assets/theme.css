@@ -1,0 +1,122 @@
+/* ============================================================
+   Дизайн-система: тёплый минимализм.
+   Единственный источник истины по цвету, типографике и геометрии.
+   В компонентах — только var(--...), хардкод цветов запрещён.
+   ============================================================ */
+
+:root {
+  /* --- Палитра ------------------------------------------------ */
+  --c-bg:            #F5F1EB;  /* фон страницы */
+  --c-surface:       #FBF9F5;  /* карточки, таблицы */
+  --c-soft:          #EDE6DA;  /* мягкий акцент, подложки */
+  --c-border:        #D4CBBC;  /* границы */
+  --c-accent:        #C8643C;  /* единственный яркий — только интерактив/выделение */
+  --c-text:          #3D3929;  /* текст */
+  --c-muted:         #6B6453;  /* приглушённый текст */
+
+  /* Семантическая тройка: цвет + подложка */
+  --c-run:           #C2A878;  --c-run-bg:    #EFE7D4;  /* охра */
+  --c-change:        #8FA178;  --c-change-bg: #E4EADD;  /* шалфей */
+  --c-late:          #A8443F;  --c-late-bg:   #F1E0DD;  /* кирпичный */
+
+  /* Производные от границы: волосяная линейка внутри таблиц */
+  --c-rule:          rgba(212, 203, 188, 0.55);
+  --c-accent-soft:   rgba(200, 100, 60, 0.08);
+
+  /* --- Типографика -------------------------------------------- */
+  --font-serif: 'Tiempos Text', 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --fs-9:  9px;
+  --fs-11: 11px;
+  --fs-13: 13px;
+  --fs-20: 20px;
+  --fs-34: 34px;
+
+  --lh:       1.6;
+  --lh-tight: 1.25;
+
+  /* --- Геометрия ---------------------------------------------- */
+  --bw:   1px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;
+
+  --content:      720px;   /* редакторская колонка */
+  --content-wide: 960px;   /* витрины с плотными таблицами */
+  --content-full: 1180px;  /* разбор сессии: график + тепловые карты + боковая колонка */
+
+  /* --- Ритм ---------------------------------------------------- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  72px;
+
+  /* --- Движение ------------------------------------------------ */
+  --dur:      160ms;
+  --ease:     cubic-bezier(0.2, 0, 0.2, 1);
+  --debounce: 220ms; /* справочно: значение дебаунса в app.js */
+}
+
+/* --- База ----------------------------------------------------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  line-height: var(--lh);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: var(--lh-tight);
+  margin: 0;
+}
+
+h1 { font-size: var(--fs-34); letter-spacing: -0.01em; }
+h2 { font-size: var(--fs-20); }
+
+p { margin: 0; }
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: var(--bw) solid var(--c-accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+::selection {
+  background: var(--c-soft);
+  color: var(--c-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

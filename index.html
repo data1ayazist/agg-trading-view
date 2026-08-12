@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Аномальные сессии · Market Surveillance</title>
+  <meta name="description" content="Витрина аномальных торговых сессий: отбор по критериям агрессивного ценового воздействия.">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+
+  <div class="lock" id="lock">
+    <form class="lock__card" id="lock-form">
+      <p class="eyebrow">Market surveillance</p>
+      <h1>Вход в витрину</h1>
+      <p class="lock__note">Прототип кабинета сотрудника надзора за торгами. Доступ по учётной записи.</p>
+
+      <label class="field__label" for="lock-login">Логин</label>
+      <input class="control" id="lock-login" name="login" autocomplete="username" spellcheck="false" autofocus>
+
+      <label class="field__label" for="lock-pass">Пароль</label>
+      <input class="control" id="lock-pass" name="password" type="password" autocomplete="current-password">
+
+      <p class="lock__error" id="lock-error" role="alert" hidden></p>
+      <button type="submit" class="btn-lock">Войти</button>
+    </form>
+  </div>
+
+  <div class="shell shell--wide" id="shell" hidden>
+
+    <nav class="topnav" aria-label="Разделы">
+      <a href="#/anomal-sessions" data-nav="list">Аномальные сессии</a>
+      <a href="#/rating" data-nav="rating">Рейтинг трейдеров</a>
+    </nav>
+
+    <!-- ================= Витрина ================= -->
+    <section class="view" id="view-list">
+
+      <header class="masthead">
+        <p class="eyebrow">Market surveillance · витрина</p>
+        <h1>Аномальные сессии</h1>
+        <p class="lede" id="lede">
+          Торговые сессии, отобранные автоматическими критериями агрессивного воздействия на цену.
+        </p>
+      </header>
+
+      <section class="panel filters" aria-label="Фильтры">
+        <div class="filters__grid">
+
+          <div class="field field--dates">
+            <label class="field__label" for="f-from">Интервал дат</label>
+            <div class="field__row">
+              <input type="date" id="f-from" class="control" aria-label="Дата начала">
+              <span class="field__dash" aria-hidden="true">—</span>
+              <input type="date" id="f-to" class="control" aria-label="Дата окончания">
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field__label" id="lbl-boards">Режим торгов</span>
+            <div class="chips" id="f-boards" role="group" aria-labelledby="lbl-boards"></div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="f-sec">Ценная бумага</label>
+            <input type="text" id="f-sec" class="control" list="sec-list" autocomplete="off"
+                   placeholder="Все бумаги" spellcheck="false">
+            <datalist id="sec-list"></datalist>
+          </div>
+
+          <div class="field">
+            <span class="field__label" id="lbl-levels">Уровень листинга</span>
+            <div class="chips" id="f-levels" role="group" aria-labelledby="lbl-levels"></div>
+          </div>
+
+        </div>
+
+        <div class="filters__foot">
+          <p class="result-line" id="result-line" aria-live="polite"></p>
+          <button type="button" class="btn-quiet" id="f-reset" hidden>Сбросить фильтры</button>
+        </div>
+      </section>
+
+      <section class="panel table-panel" aria-label="Список аномальных сессий">
+        <table class="grid" id="grid">
+          <colgroup>
+            <col class="col-date">
+            <col class="col-board">
+            <col class="col-sec">
+            <col class="col-lvl">
+            <col class="col-num">
+            <col class="col-num">
+            <col class="col-vol">
+            <col class="col-flag">
+            <col class="col-flag">
+            <col class="col-flag">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col"><button type="button" class="sort" data-sort="date">Дата<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col"><button type="button" class="sort" data-sort="board">Режим торгов<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col"><button type="button" class="sort" data-sort="security">Ценная бумага<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--num"><button type="button" class="sort" data-sort="listing"
+                  data-tip="Уровень котировального списка: 1 и 2 — котировальные части, 3 — некотировальная.">Ур.<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--num"><button type="button" class="sort" data-sort="closeChange">Изменение цены закрытия к предыдущей сессии<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--num"><button type="button" class="sort" data-sort="maxMinuteGain">Макс. прирост цены минутной свечи<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--num"><button type="button" class="sort" data-sort="volume"
+                  data-tip="Объём торгов бумагой за сессию, в миллионах рублей.">Объём торгов, млн ₽<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--flag"><button type="button" class="sort" data-sort="sechist"
+                  data-tip="Критерий sechist: отклонение итогов сессии от исторического поведения бумаги.">Флаг sechist-критерия<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--flag"><button type="button" class="sort" data-sort="minuteCandles"
+                  data-tip="Критерий минутных свечей: резкий внутриминутный прирост цены.">Флаг критерия минутных свечей<span class="sort__mark" aria-hidden="true"></span></button></th>
+              <th scope="col" class="th--flag"><button type="button" class="sort" data-sort="markingOpenClose"
+                  data-tip="Marking the open/close: воздействие на цену в моменты открытия и закрытия сессии.">Флаг marking the open/close<span class="sort__mark" aria-hidden="true"></span></button></th>
+            </tr>
+          </thead>
+          <tbody id="grid-body"></tbody>
+        </table>
+
+        <div class="empty" id="empty" hidden>
+          <p class="empty__title">Ничего не найдено</p>
+          <p class="empty__hint">Под текущие фильтры не попала ни одна сессия.</p>
+          <button type="button" class="btn-quiet" data-reset>Сбросить фильтры</button>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ================= Разбор сессии ================= -->
+    <section class="view" id="view-session" hidden>
+
+      <a class="backlink" id="back-link" href="#/anomal-sessions">← Витрина аномальных сессий</a>
+
+      <header class="masthead masthead--session">
+        <p class="eyebrow" id="s-eyebrow"></p>
+        <h1 id="s-title"></h1>
+        <p class="lede" id="s-lede"></p>
+      </header>
+
+      <div class="layout">
+        <div class="layout__main">
+
+          <section class="panel meta" aria-label="Параметры сессии">
+            <dl class="meta__grid" id="s-meta"></dl>
+            <div class="meta__flags" id="s-flags"></div>
+          </section>
+
+          <section class="panel card" aria-label="График минутных свечей">
+            <div class="card__head">
+              <h2>Минутные свечи</h2>
+              <p class="card__note" id="s-chart-note"></p>
+            </div>
+            <div class="chart">
+              <svg class="chart__axis" id="s-axis" aria-hidden="true"></svg>
+              <div class="chart__scroll" id="s-chart-scroll">
+                <svg class="chart__plot" id="s-chart" role="img" aria-label="Минутные свечи основной сессии"></svg>
+              </div>
+            </div>
+            <p class="card__foot" id="s-chart-foot"></p>
+          </section>
+
+          <div id="s-heatmaps"></div>
+
+          <section class="panel card traders" aria-label="Продвинутые метрики агрессивных трейдеров">
+            <div class="card__head">
+              <h2>Продвинутые метрики агрессивных трейдеров</h2>
+              <p class="card__note" id="t-note"></p>
+            </div>
+
+            <div class="traders__controls">
+              <div class="field">
+                <span class="field__label" id="t-lbl-types">Тип клиента</span>
+                <div class="chips" id="t-types" role="group" aria-labelledby="t-lbl-types"></div>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="t-inn">ИНН брокера</label>
+                <select class="control" id="t-inn"></select>
+              </div>
+
+              <div class="field field--action">
+                <button type="button" class="btn-quiet" id="t-weights-toggle"
+                        aria-expanded="false" aria-controls="t-weights"
+                        data-tip="Веса столбцов 5–13 задают порядок клиентов по совокупному индексу агрессивности.">
+                  Перенастроить сортировку
+                </button>
+              </div>
+            </div>
+
+            <div class="weights" id="t-weights" hidden>
+              <div class="weights__grid" id="t-weights-grid"></div>
+              <div class="weights__foot">
+                <p class="weights__note" id="t-weights-note"></p>
+                <button type="button" class="btn-quiet" id="t-weights-reset">Вернуть все веса к 1</button>
+              </div>
+            </div>
+
+            <div class="traders__scroll">
+              <table class="grid traders__table">
+                <thead id="t-head"></thead>
+                <tbody id="t-body"></tbody>
+              </table>
+            </div>
+
+            <div class="traders__foot">
+              <p class="result-line" id="t-count" aria-live="polite"></p>
+              <nav class="pager" id="t-pager" aria-label="Страницы списка клиентов"></nav>
+            </div>
+          </section>
+
+          <section class="panel card news" aria-label="Новостной фон">
+            <div class="card__head">
+              <h2>Новостной фон по эмитенту</h2>
+              <p class="card__note">синтетические демо-данные прототипа</p>
+            </div>
+            <ul class="news__list" id="s-news"></ul>
+          </section>
+
+        </div>
+
+        <aside class="layout__aside">
+          <div class="aside__sticky">
+            <p class="aside__label">Углублённый разбор</p>
+            <button type="button" class="btn-action" data-stub="Полная тепловая карта"
+                    data-tip="Все участники сессии по минутам, без отсечки топ-8.&#10;Раздел появится в следующей итерации.">
+              Полная тепловая карта<span class="btn-action__tag">скоро</span>
+            </button>
+            <button type="button" class="btn-action" data-stub="Momentum Ignition-анализ"
+                    data-tip="Поиск разгона: серия агрессивных сделок, за которой следует движение цены.&#10;Раздел появится в следующей итерации.">
+              Momentum Ignition-анализ<span class="btn-action__tag">скоро</span>
+            </button>
+            <button type="button" class="btn-action" data-stub="Spoofing-анализ"
+                    data-tip="Заявки без намерения исполнения: выставление и снятие лимитных объёмов.&#10;Раздел появится в следующей итерации.">
+              Spoofing-анализ<span class="btn-action__tag">скоро</span>
+            </button>
+            <p class="aside__note" id="s-stub-note" role="status"></p>
+          </div>
+        </aside>
+      </div>
+
+    </section>
+
+    <!-- ================= Рейтинг трейдеров ================= -->
+    <section class="view" id="view-rating" hidden>
+
+      <header class="masthead">
+        <p class="eyebrow">Market surveillance · рейтинг</p>
+        <h1>Агрессивные трейдеры</h1>
+        <p class="lede" id="r-lede"></p>
+      </header>
+
+      <section class="panel filters" aria-label="Фильтры рейтинга">
+        <div class="filters__grid filters__grid--rating">
+          <div class="field">
+            <span class="field__label" id="r-lbl-window">Окно</span>
+            <div class="chips" id="r-window" role="group" aria-labelledby="r-lbl-window"></div>
+          </div>
+          <div class="field">
+            <span class="field__label" id="r-lbl-types">Тип клиента</span>
+            <div class="chips" id="r-types" role="group" aria-labelledby="r-lbl-types"></div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="r-inn">ИНН брокера</label>
+            <select class="control" id="r-inn"></select>
+          </div>
+          <div class="field">
+            <span class="field__label" id="r-lbl-flag">Расследование</span>
+            <div class="chips" id="r-flag" role="group" aria-labelledby="r-lbl-flag"></div>
+          </div>
+        </div>
+
+        <div class="filters__foot">
+          <p class="result-line" id="r-count" aria-live="polite"></p>
+          <button type="button" class="btn-quiet" id="r-weights-toggle"
+                  aria-expanded="false" aria-controls="r-weights"
+                  data-tip="Веса метрик 0–1 задают порядок клиентов в рейтинге.">
+            Перенастроить индекс
+          </button>
+        </div>
+
+        <div class="weights" id="r-weights" hidden>
+          <div class="weights__grid" id="r-weights-grid"></div>
+          <div class="weights__foot">
+            <p class="weights__note" id="r-weights-note"></p>
+            <button type="button" class="btn-quiet" id="r-weights-reset">Вернуть все веса к 1</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel table-panel" aria-label="Рейтинг клиентов">
+        <div class="traders__scroll">
+          <table class="grid rating__table">
+            <thead id="r-head"></thead>
+            <tbody id="r-body"></tbody>
+          </table>
+        </div>
+        <div class="traders__foot">
+          <p class="result-line" id="r-page-info"></p>
+          <nav class="pager" id="r-pager" aria-label="Страницы рейтинга"></nav>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ================= Карточка клиента ================= -->
+    <section class="view" id="view-client" hidden>
+
+      <a class="backlink" href="#/rating">← Рейтинг агрессивных трейдеров</a>
+
+      <header class="masthead masthead--session">
+        <p class="eyebrow" id="c-eyebrow"></p>
+        <h1 id="c-title"></h1>
+        <p class="lede" id="c-lede"></p>
+      </header>
+
+      <div class="layout">
+        <div class="layout__main">
+
+          <section class="panel card">
+            <div class="card__head">
+              <h2>Индекс опасности</h2>
+              <p class="card__note">перцентильные ранги метрик внутри окна, 0–100</p>
+            </div>
+            <div class="scores" id="c-index"></div>
+            <p class="card__foot" id="c-verdict"></p>
+          </section>
+
+          <section class="panel card">
+            <div class="card__head">
+              <h2>Почему клиент в топе</h2>
+              <div class="chips" id="c-window"></div>
+            </div>
+            <div class="bars" id="c-breakdown"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card__head">
+              <h2>Динамика по месяцам</h2>
+              <p class="card__note">столбцы — объёмы, линия — индекс опасности</p>
+            </div>
+            <div id="c-trend"></div>
+            <p class="card__foot">
+              <span class="key key--buy"></span>покупки ·
+              <span class="key key--taker"></span>тейкерские покупки ·
+              <span class="key key--index"></span>индекс опасности (0–100)
+            </p>
+          </section>
+
+          <section class="panel card">
+            <div class="card__head">
+              <h2>Метрики за оба окна</h2>
+              <p class="card__note">значение и перцентиль внутри рейтинга</p>
+            </div>
+            <div class="traders__scroll">
+              <table class="grid agg__table" id="c-agg"></table>
+            </div>
+          </section>
+
+          <section class="panel card">
+            <div class="card__head">
+              <h2>Бумаги</h2>
+              <p class="card__note">распределение тейкерского объёма</p>
+            </div>
+            <div class="mix" id="c-mix"></div>
+          </section>
+
+          <section class="panel card">
+            <div class="card__head">
+              <h2>Эпизоды в аномальных сессиях</h2>
+              <p class="card__note">роль клиента и переход в разбор</p>
+            </div>
+            <div class="traders__scroll">
+              <table class="grid" id="c-incidents"></table>
+            </div>
+          </section>
+
+        </div>
+
+        <aside class="layout__aside">
+          <div class="aside__sticky">
+            <p class="aside__label">Статус</p>
+            <p id="c-status"></p>
+            <button type="button" class="btn-action btn-action--wide" id="c-flag-btn"></button>
+            <p class="aside__note" id="c-flag-note"></p>
+          </div>
+        </aside>
+      </div>
+
+    </section>
+
+    <!-- ================= Не найдено ================= -->
+    <section class="view" id="view-404" hidden>
+      <div class="panel empty">
+        <p class="empty__title">Сессия не найдена</p>
+        <p class="empty__hint">В выгрузке нет такой пары «дата — бумага».</p>
+        <a class="btn-quiet" href="#/anomal-sessions">Вернуться к витрине</a>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      <p id="colophon-text"></p>
+    </footer>
+
+  </div>
+
+  <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <script src="assets/gate.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/tooltip.js"></script>
+  <script src="assets/universe.js"></script>
+  <script src="assets/session.js"></script>
+  <script src="assets/rating.js"></script>
+  <script src="assets/client.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

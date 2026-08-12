@@ -1,0 +1,200 @@
+/* Автогенерировано tools/xlsx_to_data.py из anomal-sessions.xlsx — руками не править. */
+window.MSD = window.MSD || {};
+window.MSD.data = {
+  "source": "anomal-sessions.xlsx",
+  "generatedAt": "2026-08-12 11:59",
+  "headers": {
+    "date": "Дата",
+    "board": "Режим торгов",
+    "security": "Ценная бумага",
+    "listing": "Уровень листинга",
+    "closeChange": "Изменение цены закрытия к предыдущей сессии",
+    "maxMinuteGain": "Макс. прирост цены минутной свечи",
+    "sechist": "Флаг sechist-критерия",
+    "minuteCandles": "Флаг критерия минутных свечей",
+    "markingOpenClose": "Флаг marking the open/close",
+    "volume": "Объём торгов, руб."
+  },
+  "sessions": [
+    {
+      "date": "2026-08-03",
+      "board": "TQBR",
+      "security": "GAZP",
+      "listing": 1,
+      "closeChange": 0.084,
+      "maxMinuteGain": 0.046,
+      "sechist": true,
+      "minuteCandles": false,
+      "markingOpenClose": false,
+      "volume": 98400000
+    },
+    {
+      "date": "2026-08-03",
+      "board": "TQBR",
+      "security": "MVID",
+      "listing": 2,
+      "closeChange": 0.127,
+      "maxMinuteGain": 0.048,
+      "sechist": true,
+      "minuteCandles": false,
+      "markingOpenClose": false,
+      "volume": 41250000
+    },
+    {
+      "date": "2026-08-03",
+      "board": "TQCB",
+      "security": "RU000A105QW2",
+      "listing": 1,
+      "closeChange": 0.031,
+      "maxMinuteGain": 0.058,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 7830000
+    },
+    {
+      "date": "2026-08-04",
+      "board": "TQBR",
+      "security": "SGZH",
+      "listing": 2,
+      "closeChange": -0.092,
+      "maxMinuteGain": 0.039,
+      "sechist": true,
+      "minuteCandles": false,
+      "markingOpenClose": false,
+      "volume": 26700000
+    },
+    {
+      "date": "2026-08-04",
+      "board": "TQBR",
+      "security": "ROSN",
+      "listing": 1,
+      "closeChange": 0.024,
+      "maxMinuteGain": 0.057,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 87150000
+    },
+    {
+      "date": "2026-08-04",
+      "board": "TQTF",
+      "security": "TMOS",
+      "listing": 1,
+      "closeChange": 0.012,
+      "maxMinuteGain": 0.056,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 12480000
+    },
+    {
+      "date": "2026-08-05",
+      "board": "TQBR",
+      "security": "OKEY",
+      "listing": 3,
+      "closeChange": 0.153,
+      "maxMinuteGain": 0.118,
+      "sechist": true,
+      "minuteCandles": true,
+      "markingOpenClose": true,
+      "volume": 5920000
+    },
+    {
+      "date": "2026-08-05",
+      "board": "TQCB",
+      "security": "RU000A101QF9",
+      "listing": 2,
+      "closeChange": -0.078,
+      "maxMinuteGain": 0.042,
+      "sechist": true,
+      "minuteCandles": false,
+      "markingOpenClose": false,
+      "volume": 3140000
+    },
+    {
+      "date": "2026-08-05",
+      "board": "TQBR",
+      "security": "NKHP",
+      "listing": 2,
+      "closeChange": 0.069,
+      "maxMinuteGain": 0.054,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 18600000
+    },
+    {
+      "date": "2026-08-06",
+      "board": "TQBR",
+      "security": "UWGN",
+      "listing": 2,
+      "closeChange": 0.106,
+      "maxMinuteGain": 0.087,
+      "sechist": true,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 33900000
+    },
+    {
+      "date": "2026-08-06",
+      "board": "TQCB",
+      "security": "RU000A104UA4",
+      "listing": 3,
+      "closeChange": 0.045,
+      "maxMinuteGain": 0.064,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 1080000
+    },
+    {
+      "date": "2026-08-06",
+      "board": "TQTF",
+      "security": "SBMX",
+      "listing": 1,
+      "closeChange": 0.008,
+      "maxMinuteGain": 0.052,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": true,
+      "volume": 9450000
+    },
+    {
+      "date": "2026-08-07",
+      "board": "TQBR",
+      "security": "APTK",
+      "listing": 2,
+      "closeChange": 0.056,
+      "maxMinuteGain": 0.063,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 2360000
+    },
+    {
+      "date": "2026-08-07",
+      "board": "TQBR",
+      "security": "RENI",
+      "listing": 1,
+      "closeChange": -0.032,
+      "maxMinuteGain": 0.053,
+      "sechist": false,
+      "minuteCandles": true,
+      "markingOpenClose": false,
+      "volume": 15730000
+    },
+    {
+      "date": "2026-08-07",
+      "board": "TQCB",
+      "security": "RU000A106888",
+      "listing": 2,
+      "closeChange": 0.074,
+      "maxMinuteGain": 0.036,
+      "sechist": true,
+      "minuteCandles": false,
+      "markingOpenClose": false,
+      "volume": 4270000
+    }
+  ]
+};

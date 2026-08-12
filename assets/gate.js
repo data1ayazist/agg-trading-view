@@ -24,7 +24,11 @@
   function open() {
     lock.hidden = true;
     shell.hidden = false;
-    document.body.classList.remove('is-locked');
+    /* Инлайновый стиль — страховка от устаревшего theme.css в кеше браузера:
+       без него правило .lock { display: flex } перебивает атрибут hidden
+       и форма остаётся поверх открытой витрины. */
+    lock.style.display = 'none';
+    shell.style.display = '';
   }
 
   function fail(text) {
